@@ -2,24 +2,38 @@ import { useState } from 'react';
 import { nanoid } from 'nanoid';
 
 import css from 'components/ContactForm/ContactForm.module.css';
+ import { useDispatch } from 'react-redux';
+// import { fetchContacts } from 'services/phoneApiContacts';
+//  import { phoneBook } from 'store/phone/reducerPhoneBook';
+// import { fetchContacts } from 'services/phoneApiContacts';
+
+ import { getPhoneContacts } from 'store/phone/thunks';
 
 export const ContactForm = ({ onSubmit }) => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setNumber] = useState('');
+
+  const dispatch = useDispatch();
+
 
   const handleChange = ({ target: { name, value } }) => {
     if (name === 'name') setName(value);
-    else if (name === 'number') setNumber(value);
+    else if (name === 'phone') setNumber(value);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    onSubmit({ id: nanoid(), name, number });
+
+    dispatch(getPhoneContacts())
+    onSubmit({ id: nanoid(), name, phone });
+ 
 
     setName('');
     setNumber('');
   };
+
+  // const dispatch = useDispatch();
 
   return (
     <div>
@@ -46,11 +60,11 @@ export const ContactForm = ({ onSubmit }) => {
           </label>
           <input
             type="tel"
-            name="number"
+            name="phone"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             onChange={handleChange}
-            value={number}
+            value={phone}
             placeholder="999-99-99"
             required
           />
@@ -58,6 +72,14 @@ export const ContactForm = ({ onSubmit }) => {
 
         <button type="submit" className={css.btn}>
           Add contact
+        </button>
+        
+        <button
+          type="click"
+          className={css.btn}
+          onClick={() => dispatch(getPhoneContacts())}
+        >
+          thunk
         </button>
       </form>
     </div>

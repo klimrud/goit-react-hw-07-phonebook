@@ -4,47 +4,89 @@ import { ContactList } from './ContactList/ContactList.jsx';
 import { Toaster, toast } from 'react-hot-toast';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { contactCreate, contactRemove } from 'store/contacts/slice.js';
+//  import { contactCreate, contactRemove } from 'store/contacts/slice.js';
 import { filterChange } from 'store/filter/slice.js';
+import {
+  createPhoneContacts,
+  deletePhoneContacts,
+  getPhoneContacts,
+} from 'store/phone/thunks.js';
+import { useEffect } from 'react';
 
 export const App = () => {
-  const { contacts } = useSelector(state => state.contacts);
+  const { items, isLoading, error } = useSelector(state => state.contacts);
+
+  //  const { contacts } = useSelector(state => state.contacts);
   const { filter } = useSelector(state => state.filter);
 
   const dispatch = useDispatch();
 
+  // const createContact = contact => {
+  //   if (
+  //     contacts.some(
+  //       el => el.name === contact.name && el.number === contact.number
+  //     )
+  //   ) {
+  //     toast.success(`${contact.name} is already in contacts`);
+  //   } else {
+  //     dispatch(contactCreate(contact));
+  //   }
+  // };
+
+  // const removeContact = contactId => {
+  //   dispatch(
+  //     contactRemove(contacts.filter(contact => contact.id !== contactId))
+  //   );
+  // }
+
   const createContact = contact => {
     if (
-      contacts.some(
-        el => el.name === contact.name && el.number === contact.number
-      )
+      items.some(el => el.name === contact.name && el.phone === contact.phone)
     ) {
       toast.success(`${contact.name} is already in contacts`);
     } else {
-      dispatch(contactCreate(contact));
+      dispatch(createPhoneContacts(contact));
     }
   };
 
-  const removeContact = contactId => {
-    dispatch(
-      contactRemove(contacts.filter(contact => contact.id !== contactId))
-    );
+  const removeContact = async contactId => {
+    try {
+      await dispatch(deletePhoneContacts(contactId));
+      toast.success('Contact deleted successfully');
+    } catch {
+      console.error('error');
+      toast.error('Something went wrong');
+    }
   };
+
+  useEffect(() => {
+    dispatch(getPhoneContacts());
+  }, [dispatch]);
 
   const changeFilter = filter => {
     dispatch(filterChange(filter));
   };
 
   const filteredContacts = () => {
+    console.log('filter', filter);
+
     if (filter) {
-      const visibleFriends = contacts.filter(el =>
+      const visibleFriends = items.filter(el =>
         el.name.toLowerCase().includes(filter.toLowerCase().trim())
       );
       return visibleFriends;
     } else {
-      return contacts;
+      return items;
     }
   };
+
+  if (isLoading) {
+    return <h2>Loading...</h2>;
+  }
+
+  if (error) {
+    return <h2>Something went wrong...</h2>;
+  }
 
   return (
     <div>
@@ -52,14 +94,14 @@ export const App = () => {
       <ContactForm onSubmit={createContact} />
 
       <h2>Contacts</h2>
-      {contacts.length > 1 && (
-        <Filter filter={filter} onChange={changeFilter} />
-      )}
-      {contacts.length > 0 ? (
+
+      {items.length > 1 && <Filter filter={filter} onChange={changeFilter} />}
+      {items.length > 0 ? (
         <ContactList contacts={filteredContacts()} onDelete={removeContact} />
       ) : (
         <p className="title">No contacts</p>
       )}
+
       <Toaster
         position="top-left"
         reverseOrder={false}

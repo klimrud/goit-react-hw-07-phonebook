@@ -1,13 +1,14 @@
 .item {
   display: flex;
   margin: 0 auto;
-  width: 500px;
+  width: 600px;
   height: 40px;
   padding: 10px;
   align-items: center;
   border-radius: 2px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
+
 
 .contactLink {
   cursor: pointer;
@@ -27,6 +28,10 @@
   margin: 20px 0 0;
   padding-left: 20px;
   width: 200px;
+}
+
+.contactIndex{
+  width: 50px;
 }
 
 .contactTitle {

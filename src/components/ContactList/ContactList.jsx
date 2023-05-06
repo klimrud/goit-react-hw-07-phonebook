@@ -3,8 +3,15 @@ import PropTypes from 'prop-types';
 import { IoTrashBin } from 'react-icons/io5';
 
 import css from 'components/ContactList/ContactList.module.css';
+// import { useDispatch } from 'react-redux';
 
-export const ContactList = ({ contacts = [], onDelete }) => {
+export const ContactList = (
+  { contacts = [], onDelete }
+  ) => {
+
+
+    // const dispatch = useDispatch();
+
   return (
     <section>
       <div className={css.contactContainer}>
@@ -12,16 +19,18 @@ export const ContactList = ({ contacts = [], onDelete }) => {
         <h3 className={css.contactHead}>Number</h3>
       </div>
       <ul className={css['contacts-list']}>
-        {contacts.map(({ id, name, number }) => (
+        {contacts.map(({ id,  name,  phone }) => (
           <li key={id} className={css.item}>
+            
             <p className={css.contactTitle}>{name}</p>
-            <a className={css.contactLink} href={'tel:' + number}>
-              {number}
+            <a className={css.contactLink} href={'tel:' + phone}>
+              {/* {number} */}
+              { phone}
             </a>
             <button
               type="click"
               className={css.btnIcon}
-              onClick={() => onDelete(id)}
+              onClick={() => (onDelete(id))}
             >
               <span className={css.stats}>
                 <IoTrashBin className={css.icon} />
@@ -39,7 +48,8 @@ ContactList.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
+      // number: PropTypes.string.isRequired,
+      phone: PropTypes.string.isRequired,
     })
   ).isRequired,
   onDelete: PropTypes.func.isRequired,
