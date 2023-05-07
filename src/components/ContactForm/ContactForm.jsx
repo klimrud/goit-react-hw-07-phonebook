@@ -2,19 +2,15 @@ import { useState } from 'react';
 import { nanoid } from 'nanoid';
 
 import css from 'components/ContactForm/ContactForm.module.css';
- import { useDispatch } from 'react-redux';
-// import { fetchContacts } from 'services/phoneApiContacts';
-//  import { phoneBook } from 'store/phone/reducerPhoneBook';
-// import { fetchContacts } from 'services/phoneApiContacts';
+import { useDispatch } from 'react-redux';
 
- import { getPhoneContacts } from 'store/phone/thunks';
+import { getPhoneContacts } from 'store/phone/thunks';
 
 export const ContactForm = ({ onSubmit }) => {
   const [name, setName] = useState('');
   const [phone, setNumber] = useState('');
 
   const dispatch = useDispatch();
-
 
   const handleChange = ({ target: { name, value } }) => {
     if (name === 'name') setName(value);
@@ -24,16 +20,12 @@ export const ContactForm = ({ onSubmit }) => {
   const handleSubmit = e => {
     e.preventDefault();
 
-
-    dispatch(getPhoneContacts())
+    dispatch(getPhoneContacts());
     onSubmit({ id: nanoid(), name, phone });
- 
 
     setName('');
     setNumber('');
   };
-
-  // const dispatch = useDispatch();
 
   return (
     <div>
@@ -72,14 +64,6 @@ export const ContactForm = ({ onSubmit }) => {
 
         <button type="submit" className={css.btn}>
           Add contact
-        </button>
-        
-        <button
-          type="click"
-          className={css.btn}
-          onClick={() => dispatch(getPhoneContacts())}
-        >
-          thunk
         </button>
       </form>
     </div>

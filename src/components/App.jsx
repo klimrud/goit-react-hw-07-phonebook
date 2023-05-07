@@ -4,7 +4,7 @@ import { ContactList } from './ContactList/ContactList.jsx';
 import { Toaster, toast } from 'react-hot-toast';
 
 import { useDispatch, useSelector } from 'react-redux';
-//  import { contactCreate, contactRemove } from 'store/contacts/slice.js';
+
 import { filterChange } from 'store/filter/slice.js';
 import {
   createPhoneContacts,
@@ -15,29 +15,9 @@ import { useEffect } from 'react';
 
 export const App = () => {
   const { items, isLoading, error } = useSelector(state => state.contacts);
-
-  //  const { contacts } = useSelector(state => state.contacts);
   const { filter } = useSelector(state => state.filter);
 
   const dispatch = useDispatch();
-
-  // const createContact = contact => {
-  //   if (
-  //     contacts.some(
-  //       el => el.name === contact.name && el.number === contact.number
-  //     )
-  //   ) {
-  //     toast.success(`${contact.name} is already in contacts`);
-  //   } else {
-  //     dispatch(contactCreate(contact));
-  //   }
-  // };
-
-  // const removeContact = contactId => {
-  //   dispatch(
-  //     contactRemove(contacts.filter(contact => contact.id !== contactId))
-  //   );
-  // }
 
   const createContact = contact => {
     if (
@@ -68,7 +48,7 @@ export const App = () => {
   };
 
   const filteredContacts = () => {
-    console.log('filter', filter);
+   
 
     if (filter) {
       const visibleFriends = items.filter(el =>
