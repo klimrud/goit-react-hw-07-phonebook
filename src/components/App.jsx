@@ -19,6 +19,10 @@ export const App = () => {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getPhoneContacts());
+  }, [dispatch]);
+
   const createContact = contact => {
     if (
       items.some(el => el.name === contact.name && el.phone === contact.phone)
@@ -39,17 +43,11 @@ export const App = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(getPhoneContacts());
-  }, [dispatch]);
-
   const changeFilter = filter => {
     dispatch(filterChange(filter));
   };
 
   const filteredContacts = () => {
-   
-
     if (filter) {
       const visibleFriends = items.filter(el =>
         el.name.toLowerCase().includes(filter.toLowerCase().trim())
