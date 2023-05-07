@@ -73,8 +73,8 @@ export const App = () => {
 
       <h2>Contacts</h2>
 
-      {items.length > 1 && <Filter filter={filter} onChange={changeFilter} />}
-      {items.length > 0 ? (
+      {items && <Filter filter={filter} onChange={changeFilter} />}
+      {items  ? (
         <ContactList contacts={filteredContacts()} onDelete={removeContact} />
       ) : (
         <p className="title">No contacts</p>
